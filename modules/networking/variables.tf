@@ -1,4 +1,4 @@
-variable "resource_group_config" {
+variable "vnet_resource_group_config" {
   type = object({
     name = string
     location = string

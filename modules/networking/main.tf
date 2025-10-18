@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "this" {
-  name = var.resource_group_config.name
-  location = var.resource_group_config.location
+  name = var.vnet_resource_group_config.name
+  location = var.vnet_resource_group_config.location
 }
 
 resource "azurerm_virtual_network" "this" {
@@ -24,6 +24,7 @@ resource "azurerm_network_security_group" "this" {
   name = var.nsg_configuration.name
   resource_group_name = azurerm_resource_group.this.name
   location = azurerm_resource_group.this.location
+  tags = var.tags
 }
 
 resource "azurerm_network_security_rule" "this" {

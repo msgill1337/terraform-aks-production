@@ -3,16 +3,7 @@ resource "azurerm_resource_group" "this" {
   location = var.aks_resource_group_config.location
 }
 
-resource "azurerm_log_analytics_workspace" "this" {
-  name = var.aks_log_analytics_workspace_config.name
-  location = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
-  sku = var.aks_log_analytics_workspace_config.sku
-  retention_in_days = var.aks_log_analytics_workspace_config.retention_in_days
 
-  depends_on = [azurerm_resource_group.this]
-  tags = var.tags
-}
 
 resource "azurerm_kubernetes_cluster" "this" {
   name = var.kubernetes_cluster_configuration.name
@@ -39,11 +30,11 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   oms_agent {
-    log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
+    log_analytics_workspace_id = var.log_analytics_workspaces_id
   }
   tags = var.tags
 
-  depends_on = [azurerm_log_analytics_workspace.this]
+  depends_on = [azurerm_resource_group.this]
 
 }
 

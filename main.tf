@@ -42,6 +42,30 @@ module "aks" {
   depends_on = [module.networking]
 }
 
+module "acr" {
+  source = "./modules/acr"
+  acr_config = var.acr_config
+  aks_principal_id = module.aks.principal_id
+  acr_role_assignment = var.acr_role_assignment
+  acr_resource_group_config = var.acr_resource_group_config
+  depends_on = [module.aks]
+}
+
 output "VNET_ID" {
   value = module.networking.vnet_id
+}
+
+output "acr_id" {
+  description = "The ID of the Azure Container Registry"
+  value       = module.acr.acr_id
+}
+
+output "acr_login_server" {
+  description = "The login server URL for the ACR"
+  value       = module.acr.acr_login_server
+}
+
+output "acr_name" {
+  description = "The name of the ACR"
+  value       = module.acr.acr_name
 }

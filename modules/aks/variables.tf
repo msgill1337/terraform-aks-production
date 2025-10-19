@@ -5,14 +5,9 @@ variable "aks_resource_group_config" {
     })
 }
 
-variable "aks_log_analytics_workspace_config" {
-  type = object({
-    name = string
-    sku = string
-    retention_in_days = number
-  })
+variable "log_analytics_workspaces_id" {
+  type = string
 }
-
 variable "aks_node_pool_subnet_id" {
   type = string
 }

@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-        source = "hashicorp/azurerm"
-        version = "~> 4.0"
-    }
-  }
-
-  required_version = ">= 1.1.0"
-}
-
 provider "azurerm" {
   features {
   }
@@ -30,6 +19,13 @@ module "networking" {
   nsg_configuration = var.nsg_configuration
 }
 
+module "monitoring" {
+  source = "./modules/monitoring"
+  law_resource_group_config = var.law_resource_group_config
+  log_analytics_workspace_config = var.log_analytics_workspace_config
+  tags = var.tags
+}
+
 module "aks" {
   source = "./modules/aks"
   aks_node_pool_subnet_id = module.networking.subnet_ids["prod-aks-subnet01"]
@@ -38,7 +34,7 @@ module "aks" {
   tags = var.tags
   kubernetes_node_pool_configuration = var.kubernetes_node_pool_configuration
   aks_resource_group_config = var.aks_resource_group_config
-  aks_log_analytics_workspace_config = var.aks_log_analytics_workspace_config
+  log_analytics_workspaces_id = module.monitoring.log_analytics_workspace_id
   depends_on = [module.networking]
 }
 
@@ -68,4 +64,14 @@ output "acr_login_server" {
 output "acr_name" {
   description = "The name of the ACR"
   value       = module.acr.acr_name
+}
+
+output "subnet_ids" {
+    value = module.networking.subnet_ids
+    description = "Map of subnets names to their IDs"
+}
+
+output "law_id" {
+  value = module.monitoring.log_analytics_workspace_id
+  description = "ID of the LAW"
 }

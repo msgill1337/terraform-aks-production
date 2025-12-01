@@ -143,3 +143,10 @@ variable "acr_role_assignment" {
     skip_service_principal_aad_check = bool
   })
 }
+
+variable "subscription_id" {
+  type = string
+  description = "Azure subscription ID. Can also be set via ARM_SUBSCRIPTION_ID environment variable."
+  default = ""
+  sensitive = true
+}

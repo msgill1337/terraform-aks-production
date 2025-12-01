@@ -1,7 +1,7 @@
 provider "azurerm" {
   features {
   }
-  subscription_id = "860e5706-a4d0-4c7c-89c9-4bd4aaeee4ad"
+  subscription_id = var.subscription_id != "" ? var.subscription_id : null
 }
 
 resource "azurerm_resource_group" "tf-aks-rg" {
